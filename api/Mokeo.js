@@ -19,14 +19,17 @@ const  mokeo = async () => {
       {name: "shampo",make:"clear",amount:"no me acuerdo",price:380,buyprice:320,description:"shampo"},
       {name: "acondicionador",make:"clear",amount:"no me acuerdo",price:380,buyprice:320,description:"acondicionador",}
     ]
+    
     const categorias = [{name:"limpieza"},{name:"bebidas"},{name:"kiosco"},{name:"varios"}]
     for(var i = 0; i < categorias.length; i++){
         const newCategory = await Category.create(categorias[i])
     }
-    
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
     for(var i = 0; i < products.length; i++){
         const newProduct = await Product.create(products[i])
-        await newProduct.addCategory(1)
+        await newProduct.addCategory(getRandomInt(5))
     }
 
 }
