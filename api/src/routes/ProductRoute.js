@@ -91,16 +91,17 @@ router.post("/", async (req, res, next) => {
 })      
 //////////////////////////////////////////////////////////
 router.put("/", async (req, res, next) => {
-  const {productsInArray} = req.body;
+  const {products} = req.body;
+  console.log(products)
   try{
-    if (productsInArray.length){
-      for (let i = 0 ; i < productsInArray.length ; i++){
-        const editProduct = await Product.findByPk(productsInArray[i].id)
-        await editProduct.update(productsInArray[i].product);
+    if (products.length){
+      for (let i = 0 ; i < products.length ; i++){
+        const editProduct = await Product.findByPk(products[i].id)
+        await editProduct.update(products[i]);
         await editProduct.save();
       }
     }    
-    res.send(newProduct)
+    res.send("productos actualizados")
   }
   catch(err){
     next(err);
