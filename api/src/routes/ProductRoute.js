@@ -109,5 +109,25 @@ router.put("/", async (req, res, next) => {
 })      
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+router.delete("/", async (req, res, next) => {
+  const {products} = req.body;
+  try{
+    if (products.length){
+      for (let i = 0 ; i < products.length ; i++){
+        await  Product.destroy({
+          where: {
+            id: products[i].id
+          }
+        });
+      }
+    }    
+    res.send("productos eliminados")
+  }
+  catch(err){
+    next(err);
+  }
+})      
+//////////////////////////////////////////////////////////
 module.exports = router;
 
