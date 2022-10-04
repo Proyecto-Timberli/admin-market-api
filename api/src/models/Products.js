@@ -22,11 +22,11 @@ module.exports = (sequelize) => {
             allowNull: true
         },
         price: {
-            type: DataTypes.INTEGER,     
+            type: DataTypes.FLOAT,     
             allowNull: true,
         },
         buyprice: {
-            type: DataTypes.INTEGER,     
+            type: DataTypes.FLOAT,    
             allowNull: true,
         },
         stock: {
