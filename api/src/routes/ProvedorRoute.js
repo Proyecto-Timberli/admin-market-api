@@ -1,17 +1,19 @@
 const { Router } = require('express');
 const router = Router();
-const {Venta,Cliente} = require('../db.js');
+const {Provedor,Compra} = require('../db.js');
 
 
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
-router.get("/:idVenta",async (req, res, next) => {
-    const{idVenta} = req.params;
+router.get("/:idProvedor",async (req, res, next) => {
+    const{idProvedor} = req.params;
     try{
-        const venta = await Venta.findOne(
-            { where: {id: idVenta}}
+        const provedor = await Provedor.findOne(
+            { 
+                where: {id: idProvedor},
+            }
         )
-        res.send(venta)
+        res.send(provedor)
     }
     catch(err){
         next(err);
@@ -20,8 +22,8 @@ router.get("/:idVenta",async (req, res, next) => {
 //////////////////////////////////////////////////////////
 router.get("/",async (req, res, next) => {
     try{
-        const ventas = await Venta.findAll()
-        res.send(ventas)
+        const provedores = await Provedor.findAll()
+        res.send(provedores)
     }
     catch(err){
         next(err);
@@ -29,20 +31,10 @@ router.get("/",async (req, res, next) => {
 })
 //////////////////////////////////////////////////////////
 router.post("/", async (req, res, next) => {
-    const {total,resumen,idCliente} = req.body;
+    const {name,informacion} = req.body;
     try{
-      const newVenta = await Venta.create({total,resumen})
-      if (idCliente){
-        const cliente= await Cliente.findOne(
-          { where: {id: idCliente}}
-        )
-        await cliente.addVentas(newVenta)
-        const venta= await Venta.findOne(
-            { where: {ClienteId: idCliente}}
-        )
-        res.send(venta)
-      }
-      else {res.send(newVenta)}
+      const newProvedor= await Provedor.create({name,informacion})
+      res.send(newProvedor)
     }
     catch(err){
       next(err);
@@ -55,13 +47,13 @@ router.delete("/", async (req, res, next) => {
   const {id} = req.body;
   try{
     if (id){
-      await  Venta.destroy({
+      await  Provedor.destroy({
         where: {
           id: id
         }
       });
     }    
-    res.send("Venta Eliminada")
+    res.send("Provedor Eliminada")
   }
   catch(err){
     next(err);

@@ -1,17 +1,17 @@
 const { Router } = require('express');
 const router = Router();
-const {Venta,Cliente} = require('../db.js');
+const {Compra,Provedor} = require('../db.js');
 
 
 //////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
-router.get("/:idVenta",async (req, res, next) => {
-    const{idVenta} = req.params;
+router.get("/:idCompra",async (req, res, next) => {
+    const{idCompra} = req.params;
     try{
-        const venta = await Venta.findOne(
-            { where: {id: idVenta}}
+        const compra = await Compra.findOne(
+            { where: {id: idCompra}}
         )
-        res.send(venta)
+        res.send(compra)
     }
     catch(err){
         next(err);
@@ -20,8 +20,8 @@ router.get("/:idVenta",async (req, res, next) => {
 //////////////////////////////////////////////////////////
 router.get("/",async (req, res, next) => {
     try{
-        const ventas = await Venta.findAll()
-        res.send(ventas)
+        const compras = await Compra.findAll()
+        res.send(compras)
     }
     catch(err){
         next(err);
@@ -29,20 +29,20 @@ router.get("/",async (req, res, next) => {
 })
 //////////////////////////////////////////////////////////
 router.post("/", async (req, res, next) => {
-    const {total,resumen,idCliente} = req.body;
+    const {total,resumen,idProvedor} = req.body;
     try{
-      const newVenta = await Venta.create({total,resumen})
-      if (idCliente){
-        const cliente= await Cliente.findOne(
-          { where: {id: idCliente}}
+      const newCompra= await Compra.create({total,resumen})
+      if (idProvedor){
+        const provedor= await Provedor.findOne(
+          { where: {id: idProvedor}}
         )
-        await cliente.addVentas(newVenta)
-        const venta= await Venta.findOne(
-            { where: {ClienteId: idCliente}}
+        await provedor.addCompras(newCompra)
+        const compra= await Compra.findOne(
+            { where: {ProvedorId: idProvedor}}
         )
-        res.send(venta)
+        res.send(compra)
       }
-      else {res.send(newVenta)}
+      else {res.send(newCompra)}
     }
     catch(err){
       next(err);
@@ -55,13 +55,13 @@ router.delete("/", async (req, res, next) => {
   const {id} = req.body;
   try{
     if (id){
-      await  Venta.destroy({
+      await  Compra.destroy({
         where: {
           id: id
         }
       });
     }    
-    res.send("Venta Eliminada")
+    res.send("Compra Eliminada")
   }
   catch(err){
     next(err);
